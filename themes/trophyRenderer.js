@@ -38,7 +38,7 @@ function renderTrophySVG(data, options = {}) {
   const numCols = 3; // Fixed for clean look
   const numRows = Math.ceil(displayItems.length / numCols);
   const totalW = numCols * (cardW + gap) + gap;
-  const totalH = headerHeight + numRows * (cardH + gap) + 30;
+  const totalH = headerHeight + numRows * (cardH + gap) + 50;
 
   let content = '';
 
@@ -76,7 +76,7 @@ function renderTrophySVG(data, options = {}) {
 
           <!-- Icon Circle -->
           <circle cx="${cardW / 2}" cy="58" r="38" fill="${style.bg}"/>
-          <text x="${cardW / 2}" y="73" text-anchor="middle" font-size="44" opacity="${isLocked ? 0.3 : 1}" filter="${isLocked ? 'grayscale(1)' : ''}">
+          <text x="${cardW / 2}" y="73" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" font-size="44" fill="${textTitle}" opacity="${isLocked ? 0.4 : 1}">
             ${isLocked ? '🔒' : t.icon}
           </text>
 

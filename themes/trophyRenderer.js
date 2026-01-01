@@ -40,7 +40,7 @@ function renderTrophySVG(data, options = {}) {
   const numCols = Math.min(Math.max(parseInt(columns) || 3, 1), 6);
   const numRows = Math.ceil(displayItems.length / numCols);
   const totalW = numCols * (cardW + gap) + gap;
-  const totalH = numRows * (cardHeight + gap) + headerHeight + 30;
+  const totalH = numRows * (cardH + gap) + headerHeight + 30;
 
   let content = '';
 
@@ -48,7 +48,7 @@ function renderTrophySVG(data, options = {}) {
     const col = i % numCols;
     const row = Math.floor(i / numCols);
     const x = gap + col * (cardW + gap);
-    const y = headerHeight + row * (cardHeight + gap);
+    const y = headerHeight + row * (cardH + gap);
 
     const isSecret = t.tier === 'LEGENDARY' && t.category === 'Special';
     const colors = TIER_COLORS[t.tier] || TIER_COLORS.BRONZE;

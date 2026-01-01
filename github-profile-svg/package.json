@@ -1,0 +1,22 @@
+{
+  "name": "github-profile-svg",
+  "version": "1.0.0",
+  "description": "Generate GitHub-README-compatible SVG images for profile stats.",
+  "main": "api/profile.js",
+  "scripts": {
+    "start": "node api/profile.js",
+    "dev": "vercel dev"
+  },
+  "keywords": [
+    "github",
+    "readme",
+    "svg",
+    "profile",
+    "stats"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

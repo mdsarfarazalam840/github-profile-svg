@@ -30,7 +30,8 @@ module.exports = async (req, res) => {
 
     } catch (error) {
         console.error('Error in trophies API:', error.message);
-        const status = error.message === 'User not found' ? 404 : 500;
+        const status = error.message === 'User not found' ? 404 :
+            error.message === 'Rate limit exceeded' ? 403 : 500;
         return res.status(status).send('<?xml version="1.0" encoding="UTF-8"?>' + renderErrorSVG(error.message));
     }
 };

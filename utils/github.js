@@ -117,7 +117,9 @@ async function fetchTrophyData(username) {
             hidden: []
         };
     } catch (error) {
-        throw new Error(error.response?.status === 404 ? 'User not found' : 'Failed to fetch stats');
+        if (error.response?.status === 404) throw new Error('User not found');
+        if (error.response?.status === 403) throw new Error('Rate limit exceeded');
+        throw new Error('Failed to fetch stats');
     }
 }
 

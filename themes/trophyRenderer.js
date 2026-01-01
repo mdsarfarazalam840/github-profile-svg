@@ -25,16 +25,11 @@ function renderTrophySVG(data, options = {}) {
   };
 
   const cardW = 150;
-  const cardH = 170;
+  const cardH = 180;
   const gap = 15;
-  const headerHeight = 70;
+  const headerHeight = 80;
 
   // 1. Process Display List
-  // Combine stats and secrets if applicable. For this layout, we treat standard trophies with progression bars.
-  // Locked logic: If showLocked=false, we might hide unachieved milestones, but standard trophies are always "achieved" just at different tiers.
-  // Wait, standard trophies are basically stats. They are always "unlocked" but the Tier changes.
-
-  // Let's create a display list.
   let displayItems = [...standard, ...secret];
 
   const numCols = Math.min(Math.max(parseInt(columns) || 3, 1), 6);
@@ -77,7 +72,7 @@ function renderTrophySVG(data, options = {}) {
 
     content += `
       <g transform="translate(${x}, ${y})" style="${animStyle}">
-        <!-- Card Background -->
+        <!-- Card Frame -->
         <rect width="${cardW}" height="${cardH}" rx="12" fill="${cardBg}" stroke="${isDark ? '#30363d' : '#d0d7de'}" stroke-width="1"/>
         
         <!-- Tier Frame (if High Tier) -->
@@ -124,7 +119,7 @@ function renderTrophySVG(data, options = {}) {
       <rect width="100%" height="100%" rx="20" fill="${bg}"/>
       
       <!-- Header -->
-      <g transform="translate(${gap}, 40)">
+      <g transform="translate(${gap}, 45)">
         <text x="0" y="0" font-family="Segoe UI, Ubuntu, sans-serif" font-weight="800" font-size="22" fill="${textTitle}">
           ${username}'s Achievements
         </text>

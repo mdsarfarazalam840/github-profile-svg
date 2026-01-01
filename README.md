@@ -1,20 +1,18 @@
-# 🏆 GitHub Trophy: Classic Edition
+# 🏆 GitHub Trophy: Gamified Achievements
+A sophisticated achievement system for your GitHub Profile. This project has evolved into a full "Gamified" experience with visible stats, secret unlockables, and tiered progression.
 
-A polished rank-based trophy generator for your GitHub Profile. This tool generates "Classic" style medal cards with SSS - C rankings based on your verified stats.
-
-## ✨ Features
-- **Rank System:** Calculates SSS, SS, S, AAA, A, B, C ranks for every stats category.
-- **Classic Layout:** Renders horizontal strips of square achievement cards.
-- **Gradient Themes:** Premium gradients for high-tier ranks (Gold for S, Blue for A, Green for B).
-- **Zero Config:** Just add your username.
-- **Pure SVG:** Crisply rendered vector graphics suitable for any zoom level.
+## ✨ New Gamified Features
+- **Tiered Progression:** Achieve **LEGENDARY**, **GOLD**, **SILVER**, or **BRONZE** status for every category.
+- **Secret Trophies:** Unlock hidden achievements like "Early Adopter" or "Lone Wolf" based on unique behaviors.
+- **Visual Upgrades:** Neon glows for Legendary items, progress bars for stats, and slick SVG animations (fade-up + pulse).
+- **Interactive Feel:** Trophies float and animate when loaded.
+- **Zero Config:** Just use your username.
 
 ## 🛠 Usage
-
 Embed the following in your GitHub README:
 
 ```markdown
-![My Trophies](https://your-domain.vercel.app/api/trophies?username=YOUR_USERNAME&columns=6)
+![My Achievements](https://your-domain.vercel.app/api/trophies?username=YOUR_USERNAME&theme=dark&column=3)
 ```
 
 ### Query Parameters
@@ -22,21 +20,22 @@ Embed the following in your GitHub README:
 |-----------|---------|-------------|
 | `username`| Required| Your GitHub username |
 | `theme`   | `dark`  | `dark` or `light` |
-| `columns` | `6`     | Cards per row (set to 6 or 3 for best results) |
+| `columns` | `3`     | Cards per row |
+| `animation`| `on`   | Toggle animations (`on`/`off`) |
 
-## 🏆 Ranking Criteria & Tiers
-Medals are awarded and titled based on realistic tiers for different activities:
+## 🏆 Trophy Tiers
+| Tier | Color | Requirement (Example) |
+|------|-------|-----------------------|
+| **LEGENDARY** | 🔮 Neon Purple | Top 1% (e.g., >1000 Stars) |
+| **GOLD** | 🟡 Gold | High Achievement (e.g., >500 Stars) |
+| **SILVER** | ⚪ Silver | Solid Contribution (e.g., >100 Stars) |
+| **BRONZE** | 🟤 Bronze | Getting Started |
 
-| Category | Title | S Rank Criteria |
-|----------|-------|-----------------|
-| **Stars** | *Stargazer* | > 100 Stars |
-| **Followers** | *Celebrity* | > 500 Followers |
-| **Repos** | *Repo Creator* | > 50 Repos |
-| **Pull Requests** | *Pull Shark* | > 100 PRs |
-| **Issues** | *Bug Hunter* | > 100 Issues |
-| **Account Age** | *Veteran* | > 5 Years |
-
-**Ranks available:** `SSS`, `SS`, `S`, `AAA`, `AA`, `A`, `B`, `C`
+## 🌟 Secret Trophies
+Can you unlock them all?
+- 🦕 **Early Adopter**: Account created over 10 years ago.
+- 🐺 **Lone Wolf**: ???
+- 💎 **Artisan**: ???
 
 ## 🚀 Deployment
 1. **Fork** this repository.

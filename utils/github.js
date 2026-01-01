@@ -1,33 +1,23 @@
 const axios = require('axios');
 
 /**
- * Rank Thresholds
+ * Tier Definitions
  */
-const RANKS = {
-    SECRET: { label: 'SECRET', color: '#ff0055' },
-    SSS: { label: 'SSS', color: '#ff0055' },
-    SS: { label: 'SS', color: '#ffb300' },
-    S: { label: 'S', color: '#ffb300' },
-    AAA: { label: 'AAA', color: '#0969da' },
-    AA: { label: 'AA', color: '#0969da' },
-    A: { label: 'A', color: '#0969da' },
-    B: { label: 'B', color: '#2da44e' },
-    C: { label: 'C', color: '#8b949e' },
-    UNKNOWN: { label: '?', color: '#8b949e' }
+const TIERS = {
+    LEGENDARY: { label: 'LEGENDARY', color: ['#d700ff', '#ff0055'] }, // Neon Pink/Purple
+    GOLD: { label: 'GOLD', color: ['#ffb300', '#ffd700'] }, // Gold
+    SILVER: { label: 'SILVER', color: ['#c0c0c0', '#e0e0e0'] }, // Silver
+    BRONZE: { label: 'BRONZE', color: ['#cd7f32', '#a0522d'] }, // Bronze
 };
 
 /**
- * Calculate Rank Helper
+ * Calculate Tier Helper
  */
-function getRank(value, thresholds) {
-    if (value >= thresholds.SSS) return 'SSS';
-    if (value >= thresholds.SS) return 'SS';
-    if (value >= thresholds.S) return 'S';
-    if (value >= thresholds.AAA) return 'AAA';
-    if (value >= thresholds.AA) return 'AA';
-    if (value >= thresholds.A) return 'A';
-    if (value >= thresholds.B) return 'B';
-    return 'C';
+function getTier(value, thresholds) {
+    if (value >= thresholds.LEGENDARY) return 'LEGENDARY';
+    if (value >= thresholds.GOLD) return 'GOLD';
+    if (value >= thresholds.SILVER) return 'SILVER';
+    return 'BRONZE';
 }
 
 /**
@@ -56,7 +46,7 @@ async function fetchDetailedStats(username, headers) {
 }
 
 /**
- * Fetch GitHub user data and determine Ranks
+ * Fetch GitHub user data and determine achievements
  */
 async function fetchTrophyData(username) {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -68,54 +58,120 @@ async function fetchTrophyData(username) {
         const user = response.data;
         const { stars, prs, issues } = await fetchDetailedStats(username, headers);
 
-        // Derived Stats
         const accountAgeDays = (new Date() - new Date(user.created_at)) / (1000 * 60 * 60 * 24);
         const accountAgeYears = Math.floor(accountAgeDays / 365);
 
-        // Trophies Configuration with Titles
-        const trophies = [
+        // 1. Standard Progression Trophies
+        const standardTrophies = [
             {
+                id: 'stars',
                 category: 'Stars',
-                title: 'Stargazer',
+                title: 'Star Magnet',
+                icon: '🌟',
                 value: stars,
-                rank: getRank(stars, { SSS: 2000, SS: 500, S: 100, AAA: 50, AA: 25, A: 10, B: 1 })
+                unit: 'Stars',
+                tier: getTier(stars, { LEGENDARY: 1000, GOLD: 500, SILVER: 100 }),
+                max: 1000 // For progress bar logic if needed
             },
             {
-                category: 'Followers',
-                title: 'Celebrity',
+                id: 'followers',
+                category: 'Community',
+                title: 'Influencer',
+                icon: '👥',
                 value: user.followers,
-                rank: getRank(user.followers, { SSS: 2000, SS: 1000, S: 500, AAA: 200, AA: 100, A: 50, B: 10 })
+                unit: 'Followers',
+                tier: getTier(user.followers, { LEGENDARY: 1000, GOLD: 500, SILVER: 100 }),
+                max: 1000
             },
             {
+                id: 'repos',
                 category: 'Repositories',
-                title: 'Repo Creator',
+                title: 'Repo Titan',
+                icon: '📦',
                 value: user.public_repos,
-                rank: getRank(user.public_repos, { SSS: 200, SS: 100, S: 50, AAA: 30, AA: 20, A: 10, B: 5 })
+                unit: 'Repos',
+                tier: getTier(user.public_repos, { LEGENDARY: 200, GOLD: 100, SILVER: 30 }),
+                max: 200
             },
             {
+                id: 'prs',
                 category: 'Pull Requests',
-                title: 'Pull Shark',
+                title: 'Open Sourcer',
+                icon: '🔧',
                 value: prs,
-                rank: getRank(prs, { SSS: 1000, SS: 500, S: 100, AAA: 50, AA: 25, A: 10, B: 1 })
+                unit: 'PRs',
+                tier: getTier(prs, { LEGENDARY: 500, GOLD: 200, SILVER: 50 }),
+                max: 500
             },
             {
+                id: 'issues',
                 category: 'Issues',
                 title: 'Bug Hunter',
+                icon: '🐞',
                 value: issues,
-                rank: getRank(issues, { SSS: 1000, SS: 500, S: 100, AAA: 50, AA: 25, A: 10, B: 1 })
+                unit: 'Issues',
+                tier: getTier(issues, { LEGENDARY: 500, GOLD: 200, SILVER: 50 }),
+                max: 500
             },
             {
+                id: 'experience',
                 category: 'Experience',
                 title: 'Veteran',
-                value: accountAgeYears + ' Years',
-                rank: getRank(accountAgeDays, { SSS: 3650, SS: 2555, S: 1825, AAA: 1095, AA: 730, A: 365, B: 180 })
+                icon: '⏳',
+                value: accountAgeYears,
+                unit: 'Years',
+                tier: getTier(accountAgeYears, { LEGENDARY: 10, GOLD: 5, SILVER: 2 }),
+                max: 10
             }
         ];
+
+        // 2. Secret Trophies (Unlock conditions)
+        const secretTrophies = [];
+
+        // Secret: Early Adopter (ID < 1000000 or Account > 10 years)
+        if (user.id < 1000000 || accountAgeYears >= 10) {
+            secretTrophies.push({
+                id: 'early_adopter',
+                category: 'Special',
+                title: 'Early Adopter',
+                icon: '🦕',
+                description: 'Joined GitHub in the early days.',
+                tier: 'LEGENDARY',
+                unlocked: true
+            });
+        }
+
+        // Secret: Lone Wolf (Many repos, few followers)
+        if (user.public_repos >= 50 && user.followers < 10) {
+            secretTrophies.push({
+                id: 'lone_wolf',
+                category: 'Play Style',
+                title: 'Lone Wolf',
+                icon: '🐺',
+                description: 'Built a massive library alone.',
+                tier: 'GOLD',
+                unlocked: true
+            });
+        }
+
+        // Secret: Popular Maintainer (High Ratio of Stars to Repos)
+        if (stars > 500 && user.public_repos > 0 && (stars / user.public_repos) > 50) {
+            secretTrophies.push({
+                id: 'quality_first',
+                category: 'Quality',
+                title: 'Artisan',
+                icon: '💎',
+                description: 'High star-to-repo ratio.',
+                tier: 'LEGENDARY',
+                unlocked: true
+            });
+        }
 
         return {
             success: true,
             username: user.login,
-            trophies: trophies
+            standard: standardTrophies,
+            secret: secretTrophies
         };
 
     } catch (error) {
@@ -124,4 +180,4 @@ async function fetchTrophyData(username) {
     }
 }
 
-module.exports = { fetchTrophyData };
+module.exports = { fetchTrophyData, TIERS };

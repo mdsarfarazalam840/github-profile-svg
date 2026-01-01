@@ -2,11 +2,10 @@ const { fetchTrophyData } = require('../utils/github');
 const { renderTrophySVG, renderErrorSVG } = require('../themes/trophyRenderer');
 
 module.exports = async (req, res) => {
-    const { username, theme = 'dark', columns = 3, all = 'true' } = req.query;
+    const { username, theme = 'dark', columns = 3, animation = 'on', showLocked = 'true' } = req.query;
 
     // Set the correct content type for SVG
     res.setHeader('Content-Type', 'image/svg+xml');
-    // Cache the response for 24 hours
     res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=3600');
 
     if (!username) {
@@ -16,7 +15,7 @@ module.exports = async (req, res) => {
     try {
         const data = await fetchTrophyData(username.toLowerCase());
 
-        const svg = renderTrophySVG(data, { theme, columns });
+        const svg = renderTrophySVG(data, { theme, columns, animation, showLocked });
 
         return res.status(200).send('<?xml version="1.0" encoding="UTF-8"?>' + svg);
 

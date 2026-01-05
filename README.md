@@ -48,4 +48,4 @@ Can you unlock them all?
 4. **Deploy** and enjoy your Hall of Fame!
 
 ---
-Built with ❤️ for GitHub Maintainers.
+Built with ❤️
